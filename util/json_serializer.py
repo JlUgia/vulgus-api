@@ -1,0 +1,20 @@
+import json
+import datetime
+from time import strftime
+from time import mktime
+from google.appengine.ext.ndb import GeoPt
+from model.model import LocationStatus
+
+class JsonSerializer(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+        elif isinstance(obj, GeoPt):
+            return {'lat': obj.lat, 'lon': obj.lon}
+
+        elif isinstance(obj, LocationStatus):
+        	return obj.to_dict()
+
+        return json.JSONEncoder.default(self, obj)
