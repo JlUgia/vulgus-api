@@ -8,6 +8,7 @@ from webapp2_extras.routes import DomainRoute
 
 # Controllers and handlers
 from controller.location_status import *
+from controller.location_status_search_api import *
 
 # Requested URLs that are not listed here,
 # will return 404
@@ -18,7 +19,8 @@ ROUTES = [
         routes.PathPrefixRoute(r'/api/1', [
     
             # Location endpoints
-            Route(r'/location_status', handler=LocationStatusController)
+            Route(r'/location_status', handler=LocationStatusController),
+            Route(r'/location_status_search', handler=LocationStatusSearchController)
 
         ])
     ])
