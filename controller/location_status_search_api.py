@@ -1,28 +1,25 @@
 #!/usr/bin/env python
 
-import os
 import webapp2
 import json
-import re
-import time
 
 import logging
 
-from datetime import datetime
 from google.appengine.api import search
 
 from util.json_serializer import JsonSerializer
 
 FIFTY_KM_METERS = 50000
 
+
 class LocationStatusSearchController(webapp2.RequestHandler):
-            
+
     def post(self):
 
         logging.info(self.request.body)
         inputBody = json.loads(self.request.body)
 
-        if inputBody is None or not inputBody.has_key("current_location"):
+        if inputBody is None or 'current_location' not in inputBody:
             self.response.status = 422
         else:
 
@@ -32,21 +29,21 @@ class LocationStatusSearchController(webapp2.RequestHandler):
             lat = float(coords[0])
             lon = float(coords[1])
 
-            index = search.Index(name="locationIndex")
-            result = index.search("distance(location, geopoint(%f, %f)) < %d" % (lat, lon, FIFTY_KM_METERS))
+            index = search.Index(name='locationIndex')
+            result = index.search('distance(location, geopoint(%f, %f)) < %d' %
+                                  (lat, lon, FIFTY_KM_METERS))
 
             for doc in result.results:
                 locations.append(doc.fields[0].value)
 
             self.response.status = 200
-            
-        if(self.response.status_int == 200):
-            self.response.write(json.dumps(locations, cls = JsonSerializer, indent=4))
 
+        if(self.response.status_int == 200):
+            self.response.write(json.dumps(locations, cls=JsonSerializer))
 
     def put(self):
-        
-        self.response.status = 422;
+
+        self.response.status = 422
 
         if(self.request.body):
 
@@ -57,7 +54,11 @@ class LocationStatusSearchController(webapp2.RequestHandler):
             lon = float(coords[1])
 
             status_document = search.Document(doc_id=inputBody['instance_id'],
-                                              fields=[search.GeoField(name='location', value=search.GeoPoint(lat, lon))])
+                                              fields=[search.GeoField(
+                                                  name='location',
+                                                  value=search.GeoPoint(
+                                                      lat, lon
+                                                  ))])
 
             try:
                 index = search.Index(name="locationIndex")

@@ -1,10 +1,9 @@
 import json
 import datetime
-from time import strftime
-from time import mktime
 from google.appengine.ext.ndb import GeoPt
 from google.appengine.api.search import GeoPoint
 from model.model import LocationStatus
+
 
 class JsonSerializer(json.JSONEncoder):
 
@@ -19,6 +18,6 @@ class JsonSerializer(json.JSONEncoder):
             return {'lat': obj.latitude, 'lon': obj.longitude}
 
         elif isinstance(obj, LocationStatus):
-        	return obj.to_dict()
+            return obj.to_dict()
 
         return json.JSONEncoder.default(self, obj)

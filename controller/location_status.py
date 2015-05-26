@@ -1,19 +1,15 @@
 #!/usr/bin/env python
 
-import os
 import webapp2
 import json
-import re
-import time
-
-from google.appengine.ext import ndb
 
 from model.model import *
 
 from util.json_serializer import JsonSerializer
 
+
 class LocationStatusController(webapp2.RequestHandler):
-            
+
     def get(self):
 
         results = []
@@ -26,16 +22,16 @@ class LocationStatusController(webapp2.RequestHandler):
 
         self.response.status = 200
         self.outputBody = results
-            
-        if(self.response.status_int == 200):
-            self.response.write(json.dumps(self.outputBody, cls = JsonSerializer, indent=4))
 
+        if self.response.status_int == 200:
+            self.response.write(
+                json.dumps(self.outputBody, cls=JsonSerializer))
 
     def post(self):
-        
-        self.response.status = 422;
 
-        if(self.request.body):
+        self.response.status = 422
+
+        if self.request.body:
 
             inputBody = json.loads(self.request.body)
             location_status_update = LocationStatus(**inputBody)
@@ -44,5 +40,6 @@ class LocationStatusController(webapp2.RequestHandler):
             self.outputBody = location_status_update
             self.response.status = 201
 
-        if(self.response.status_int == 201): 
-            self.response.write(json.dumps(self.outputBody, cls = JsonSerializer, indent=4))
+        if self.response.status_int == 201:
+            self.response.write(
+                json.dumps(self.outputBody, cls=JsonSerializer))

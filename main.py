@@ -17,10 +17,11 @@ ROUTES = [
     DomainRoute('<:(localhost|vulgusapp\.appspot\.com)>', [
 
         routes.PathPrefixRoute(r'/api/1', [
-    
+
             # Location endpoints
             Route(r'/location_status', handler=LocationStatusController),
-            Route(r'/location_status_search', handler=LocationStatusSearchController)
+            Route(r'/location_status_search',
+                  handler=LocationStatusSearchController)
 
         ])
     ])

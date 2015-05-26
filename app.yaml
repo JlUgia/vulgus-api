@@ -8,16 +8,15 @@ handlers:
 
 - url: /api/1/.*
   script: main.app
+  secure: always
 
 
 # Tasks
-
 - url: /t/.*
   script: server_tasks.app
 
 
 # Others
-
 libraries:
 - name: webapp2
   version: "2.5.1"
